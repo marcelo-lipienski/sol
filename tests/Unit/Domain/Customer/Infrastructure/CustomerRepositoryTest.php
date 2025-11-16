@@ -29,7 +29,8 @@ class CustomerRepositoryTest extends TestCase
             new EmailValueObject($data['email']),
             new NameValueObject($data['name']),
             new PhoneNumberValueObject($data['phoneNumber']),
-            new DocumentValueObject($data['document'])
+            new DocumentValueObject($data['document']),
+            null
         );
 
         $customerRepository = new CustomerRepository();
@@ -59,11 +60,12 @@ class CustomerRepositoryTest extends TestCase
             new EmailValueObject($data['email']),
             new NameValueObject($data['name']),
             new PhoneNumberValueObject($data['phoneNumber']),
-            new DocumentValueObject($data['document'])
+            new DocumentValueObject($data['document']),
+            null
         );
 
         $customerRepository = new CustomerRepository();
-        $customerRepository->save($customer);
+        $storedCustomer = $customerRepository->save($customer);
 
         $data = [
             'email' => 'other-email@example.org',
@@ -76,7 +78,8 @@ class CustomerRepositoryTest extends TestCase
             new EmailValueObject($data['email']),
             new NameValueObject($data['name']),
             new PhoneNumberValueObject($data['phoneNumber']),
-            new DocumentValueObject($data['document'])
+            new DocumentValueObject($data['document']),
+            $storedCustomer->id
         );
 
         $customerRepository->save($updatedCustomer);

@@ -21,7 +21,8 @@ class CreateCustomer
             new EmailValueObject($newCustomer['email']),
             new NameValueObject($newCustomer['name']),
             new PhoneNumberValueObject($newCustomer['phone_number']),
-            new DocumentValueObject($newCustomer['document'])
+            new DocumentValueObject($newCustomer['document']),
+            $newCustomer['id'] ?? null
         );
 
         return $this->customerRepository->save($customer);

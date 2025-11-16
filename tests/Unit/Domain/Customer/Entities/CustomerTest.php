@@ -24,7 +24,8 @@ class CustomerTest extends TestCase
             new EmailValueObject($data['email']),
             new NameValueObject($data['name']),
             new PhoneNumberValueObject($data['phoneNumber']),
-            new DocumentValueObject($data['document'])
+            new DocumentValueObject($data['document']),
+            $id = null
         );
 
         $this->assertSame($data['email'], $customer->email->value());
