@@ -6,5 +6,5 @@ use App\Domain\Customer\Entities\Customer;
 
 interface CustomerRepositoryInterface
 {
-    public function save(Customer $customer): void;
+    public function save(Customer $customer): Customer;
 }

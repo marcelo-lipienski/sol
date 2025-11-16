@@ -15,15 +15,15 @@ class CreateCustomer
     {
     }
 
-    public function execute(array $newCustomer): void
+    public function execute(array $newCustomer): Customer
     {
         $customer = new Customer(
             new EmailValueObject($newCustomer['email']),
             new NameValueObject($newCustomer['name']),
-            new PhoneNumberValueObject($newCustomer['phoneNumber']),
+            new PhoneNumberValueObject($newCustomer['phone_number']),
             new DocumentValueObject($newCustomer['document'])
         );
 
-        $this->customerRepository->save($customer);
+        return $this->customerRepository->save($customer);
     }
 }
