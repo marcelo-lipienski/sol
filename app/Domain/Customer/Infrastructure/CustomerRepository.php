@@ -12,6 +12,23 @@ use App\Domain\Customer\ValueObjects\PhoneNumberValueObject;
 
 class CustomerRepository implements CustomerRepositoryInterface
 {
+    /**
+     * @return array<\App\Domain\Customer\Entities\Customer>
+     */
+    public function fetchAll(): array
+    {
+        $customers = array_map(function ($customer) {
+            return new Customer(
+                new EmailValueObject($customer['email']),
+                new NameValueObject($customer['name']),
+                new PhoneNumberValueObject($customer['phone_number']),
+                new DocumentValueObject($customer['document'])
+            );
+        }, EloquentCustomer::all()->toArray());
+
+        return $customers;
+    }
+
     public function save(Customer $customer): Customer
     {
         $storedCustomer = EloquentCustomer::updateOrCreate(
