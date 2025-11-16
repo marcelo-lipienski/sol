@@ -13,6 +13,7 @@ class Customer
         public EmailValueObject $email,
         public NameValueObject $name,
         public PhoneNumberValueObject $phoneNumber,
-        public DocumentValueObject $document
+        public DocumentValueObject $document,
+        public ?int $id,
     ) {}
 }

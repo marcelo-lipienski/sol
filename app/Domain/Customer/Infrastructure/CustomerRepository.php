@@ -22,11 +22,25 @@ class CustomerRepository implements CustomerRepositoryInterface
                 new EmailValueObject($customer['email']),
                 new NameValueObject($customer['name']),
                 new PhoneNumberValueObject($customer['phone_number']),
-                new DocumentValueObject($customer['document'])
+                new DocumentValueObject($customer['document']),
+                $customer['id']
             );
         }, EloquentCustomer::all()->toArray());
 
         return $customers;
+    }
+
+    public function findById(int $customerId): Customer
+    {
+        $customer = EloquentCustomer::find($customerId);
+
+        return new Customer(
+            new EmailValueObject($customer->email),
+            new NameValueObject($customer->name),
+            new PhoneNumberValueObject($customer->phone_number),
+            new DocumentValueObject($customer->document),
+            $customerId
+        );
     }
 
     public function findByDocument(DocumentValueObject $documentValueObject): Customer
@@ -37,7 +51,8 @@ class CustomerRepository implements CustomerRepositoryInterface
             new EmailValueObject($customer->email),
             new NameValueObject($customer->name),
             new PhoneNumberValueObject($customer->phone_number),
-            new DocumentValueObject($customer->document)
+            new DocumentValueObject($customer->document),
+            $customer->id
         );
     }
 
@@ -56,7 +71,8 @@ class CustomerRepository implements CustomerRepositoryInterface
             new EmailValueObject($storedCustomer->email),
             new NameValueObject($storedCustomer->name),
             new PhoneNumberValueObject($storedCustomer->phone_number),
-            new DocumentValueObject($storedCustomer->document)
+            new DocumentValueObject($storedCustomer->document),
+            $storedCustomer->id
         );
     }
 
