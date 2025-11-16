@@ -121,4 +121,23 @@ class ServiceControllerTest extends TestCase
         $this->assertDatabaseCount('services', 1);
         $response->assertJson(['data' => ['id' => $response->json('data.id'),'customer' => $secondCustomer]]);
     }
+
+    public function test_delete_service_by_id(): void
+    {
+        $customer = [
+            'email' => 'first.customer@example.org',
+            'name' => 'First Customer',
+            'phone_number' => '123456780',
+            'document' => '54.546.218/0001-75'
+        ];
+
+        $storedCustomer = EloquentCustomer::factory()->create($customer);
+
+        $storedService = EloquentService::factory()->count(2)->create(['customer_id' => $storedCustomer->id]);
+        $this->assertDatabaseCount('services', 2);
+
+        $response = $this->deleteJson("/api/service/{$storedService[0]->id}");
+        $response->assertStatus(204);
+        $this->assertDatabaseCount('services', 1);
+    }
 }

@@ -48,6 +48,11 @@ class ServiceRepository implements ServiceRepositoryInterface
         return new Service($service->customer, $storedService->id);
     }
 
+    public function delete(int $id): void
+    {
+        EloquentService::destroy($id);
+    }
+
     private function findCustomerById(int $id): Customer
     {
         return $this->customerRepository->findById($id);

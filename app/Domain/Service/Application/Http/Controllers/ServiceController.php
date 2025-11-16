@@ -5,6 +5,7 @@ namespace App\Domain\Service\Application\Http\Controllers;
 use App\Domain\Service\Application\Http\Resources\ServiceResource;
 use App\Http\Controllers\Controller;
 use App\Domain\Service\Services\CreateService;
+use App\Domain\Service\Services\DeleteService;
 use App\Domain\Service\Services\FetchAllServices;
 use App\Domain\Service\Services\FetchService;
 use App\Http\Requests\StoreServiceRequest;
@@ -30,5 +31,12 @@ class ServiceController extends Controller
         $service = $createService->execute($request->validated());
 
         return new ServiceResource($service);
+    }
+
+    public function destroy(int $id, DeleteService $deleteService)
+    {
+        $deleteService->execute($id);
+
+        return response()->json([], 204);
     }
 }

@@ -12,4 +12,5 @@ interface ServiceRepositoryInterface
     public function fetchAll(): array;
     public function findById(int $id): Service;
     public function save(Service $service): Service;
+    public function delete(int $id): void;
 }
