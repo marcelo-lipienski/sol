@@ -48,6 +48,28 @@ class ServiceControllerTest extends TestCase
         ]);
     }
 
+    public function test_find_service_by_id(): void
+    {
+        $customer = [
+            'email' => 'first.customer@example.org',
+            'name' => 'First Customer',
+            'phone_number' => '123456780',
+            'document' => '54.546.218/0001-75'
+        ];
+
+        $storedCustomer = EloquentCustomer::factory()->create($customer);
+        $storedService = EloquentService::factory()->create(['customer_id' => $storedCustomer->id]);
+
+        $response = $this->get("/api/service/{$storedService->id}");
+        $response->assertStatus(200);
+        $response->assertJson([
+            'data' => [
+                'id' => $storedService->id,
+                'customer' => $customer
+            ]
+        ]);
+    }
+
     public function test_service_creation_is_successful(): void
     {
         $customer = [
