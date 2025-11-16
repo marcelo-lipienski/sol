@@ -5,12 +5,11 @@ namespace App\Domain\Customer\Application\Http\Controllers;
 use App\Domain\Customer\Application\Http\Resources\CustomerResource;
 use App\Http\Controllers\Controller;
 use App\Domain\Customer\Services\CreateCustomer;
+use App\Domain\Customer\Services\DeleteCustomer;
 use App\Domain\Customer\Services\FetchAllCustomers;
 use App\Domain\Customer\Services\FetchCustomer;
 use App\Domain\Customer\ValueObjects\DocumentValueObject;
 use App\Http\Requests\StoreCustomerRequest;
-use App\Http\Requests\UpdateCustomerRequest;
-use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
@@ -21,7 +20,7 @@ class CustomerController extends Controller
         return CustomerResource::collection($customers);
     }
 
-    public function show($document, FetchCustomer $fetchCustomer)
+    public function show(string $document, FetchCustomer $fetchCustomer)
     {
         $customer = $fetchCustomer->execute(
             new DocumentValueObject($document)
@@ -35,5 +34,14 @@ class CustomerController extends Controller
         $customer = $createCustomer->execute($request->validated());
 
         return new CustomerResource($customer);
+    }
+
+    public function destroy(string $document, DeleteCustomer $deleteCustomer)
+    {
+        $deleteCustomer->execute(
+            new DocumentValueObject($document)
+        );
+
+        return response()->json([], 204);
     }
 }

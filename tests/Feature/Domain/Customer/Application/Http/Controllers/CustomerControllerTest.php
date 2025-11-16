@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Domain\Customer\Application\Http\Controllers;
 
+use App\Models\Customer as EloquentCustomer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -25,8 +26,8 @@ class CustomerControllerTest extends TestCase
             'document' => '092.689.130-89'
         ];
 
-        $this->post('/api/customer', $firstCustomer);
-        $this->post('/api/customer', $secondCustomer);
+        EloquentCustomer::factory()->create($firstCustomer);
+        EloquentCustomer::factory()->create($secondCustomer);
 
         $response = $this->get('/api/customer');
         $response->assertStatus(200);
@@ -49,10 +50,10 @@ class CustomerControllerTest extends TestCase
             'document' => '092.689.130-89'
         ];
 
-        $this->post('/api/customer', $firstCustomer);
-        $this->post('/api/customer', $secondCustomer);
+        EloquentCustomer::factory()->create($firstCustomer);
+        EloquentCustomer::factory()->create($secondCustomer);
 
-        $response = $this->get("/api/customer/{$secondCustomer['document']}");
+        $response = $this->get("/api/customer/09268913089");
         $response->assertStatus(200);
         $response->assertJson(['data' => $secondCustomer]);
     }
@@ -82,12 +83,9 @@ class CustomerControllerTest extends TestCase
             'document' => '54.546.218/0001-75'
         ];
 
-        $response = $this->post('/api/customer', $customer);
+        EloquentCustomer::factory()->create($customer);
 
-        $response->assertStatus(200);
         $this->assertDatabaseCount('customers', 1);
-        $response->assertJson(['data' => $customer]);
-
 
         $updatedCustomer = [
             'email' => 'fulano.da.silva@example.org',
@@ -101,5 +99,31 @@ class CustomerControllerTest extends TestCase
         $response->assertStatus(200);
         $this->assertDatabaseCount('customers', 1);
         $response->assertJson(['data' => $updatedCustomer]);
+    }
+
+    public function test_delete_customer_by_document(): void
+    {
+        $firstCustomer = [
+            'email' => 'first.customer@example.org',
+            'name' => 'First Customer',
+            'phone_number' => '123456780',
+            'document' => '54.546.218/0001-75'
+        ];
+
+        $secondCustomer = [
+            'email' => 'second.customer@example.org',
+            'name' => 'Second Customer',
+            'phone_number' => '9987665421',
+            'document' => '092.689.130-89'
+        ];
+
+        EloquentCustomer::factory()->create($firstCustomer);
+        EloquentCustomer::factory()->create($secondCustomer);
+        $this->assertDatabaseCount('customers', 2);
+
+        $response = $this->deleteJson("/api/customer/54546218000175");
+        $response->assertStatus(204);
+        $this->assertDatabaseCount('customers', 1);
+        $this->assertDatabaseHas('customers', $secondCustomer);
     }
 }

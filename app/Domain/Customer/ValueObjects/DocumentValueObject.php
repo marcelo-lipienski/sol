@@ -175,6 +175,24 @@ final class DocumentValueObject
 
     public function value(): string
     {
-        return $this->value;
+        return $this->formatDocument();
+    }
+
+    private function formatDocument(): string
+    {
+        // Natural person document
+        if (strlen($this->value) == 11) {
+            return preg_replace(
+                '/^(\d{3})(\d{3})(\d{3})(\d{2})$/',
+                '$1.$2.$3-$4',
+                $this->value
+            );
+        }
+
+        return preg_replace(
+            '/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/',
+            '$1.$2.$3/$4-$5',
+            $this->value
+        );
     }
 }

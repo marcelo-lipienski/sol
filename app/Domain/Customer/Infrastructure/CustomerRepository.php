@@ -59,4 +59,13 @@ class CustomerRepository implements CustomerRepositoryInterface
             new DocumentValueObject($storedCustomer->document)
         );
     }
+
+    public function delete(DocumentValueObject $documentValueObject): void
+    {
+        $customer = EloquentCustomer::where('document', $documentValueObject->value())->first();
+
+        if ($customer) {
+            $customer->delete();
+        }
+    }
 }

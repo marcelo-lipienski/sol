@@ -39,7 +39,7 @@ class CustomerRepositoryTest extends TestCase
             'email' => 'test@example.org',
             'name' => 'Fulano de Tal',
             'phone_number' => '1234',
-            'document' => '18172882000138' // 18.172.882/0001-38
+            'document' => '18.172.882/0001-38'
         ];
 
         $this->assertDatabaseCount(EloquentCustomer::class, 1);
@@ -85,7 +85,7 @@ class CustomerRepositoryTest extends TestCase
             'email' => 'other-email@example.org',
             'name' => 'Fulano da Silva',
             'phone_number' => '4321',
-            'document' => '18172882000138' // 18.172.882/0001-38
+            'document' => '18.172.882/0001-38'
         ];
 
         $this->assertDatabaseCount(EloquentCustomer::class, 1);

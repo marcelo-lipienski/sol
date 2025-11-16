@@ -13,4 +13,5 @@ interface CustomerRepositoryInterface
     public function fetchAll(): array;
     public function findByDocument(DocumentValueObject $documentValueObject): Customer;
     public function save(Customer $customer): Customer;
+    public function delete(DocumentValueObject $documentValueObject): void;
 }

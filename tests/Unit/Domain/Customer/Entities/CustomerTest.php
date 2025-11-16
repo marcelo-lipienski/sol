@@ -30,6 +30,6 @@ class CustomerTest extends TestCase
         $this->assertSame($data['email'], $customer->email->value());
         $this->assertSame($data['name'], $customer->name->value());
         $this->assertSame($data['phoneNumber'], $customer->phoneNumber->value());
-        $this->assertSame($data['document'], $customer->document->value());
+        $this->assertSame('18.172.882/0001-38', $customer->document->value());
     }
 }
