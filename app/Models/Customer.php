@@ -9,4 +9,17 @@ class Customer extends Model
 {
     /** @use HasFactory<\Database\Factories\CustomerFactory> */
     use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'email',
+        'name',
+        'phone_number',
+        'document'
+    ];
+
 }
