@@ -29,6 +29,18 @@ class CustomerRepository implements CustomerRepositoryInterface
         return $customers;
     }
 
+    public function findByDocument(DocumentValueObject $documentValueObject): Customer
+    {
+        $customer = EloquentCustomer::where('document', $documentValueObject->value())->first();
+
+        return new Customer(
+            new EmailValueObject($customer->email),
+            new NameValueObject($customer->name),
+            new PhoneNumberValueObject($customer->phone_number),
+            new DocumentValueObject($customer->document)
+        );
+    }
+
     public function save(Customer $customer): Customer
     {
         $storedCustomer = EloquentCustomer::updateOrCreate(

@@ -6,8 +6,11 @@ use App\Domain\Customer\Application\Http\Resources\CustomerResource;
 use App\Http\Controllers\Controller;
 use App\Domain\Customer\Services\CreateCustomer;
 use App\Domain\Customer\Services\FetchAllCustomers;
+use App\Domain\Customer\Services\FetchCustomer;
+use App\Domain\Customer\ValueObjects\DocumentValueObject;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
@@ -16,6 +19,15 @@ class CustomerController extends Controller
         $customers = $fetchAllCustomers->execute();
 
         return CustomerResource::collection($customers);
+    }
+
+    public function show($document, FetchCustomer $fetchCustomer)
+    {
+        $customer = $fetchCustomer->execute(
+            new DocumentValueObject($document)
+        );
+
+        return new CustomerResource($customer);
     }
 
     public function store(StoreCustomerRequest $request, CreateCustomer $createCustomer)
