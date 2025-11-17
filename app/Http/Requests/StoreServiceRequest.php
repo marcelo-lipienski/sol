@@ -34,6 +34,11 @@ class StoreServiceRequest extends FormRequest
                 'required',
                 'numeric',
                 'exists:states,id'
+            ],
+            'installation_id' => [
+                'required',
+                'numeric',
+                'exists:installations,id'
             ]
         ];
     }

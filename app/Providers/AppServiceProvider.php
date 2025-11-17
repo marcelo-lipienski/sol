@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Domain\Customer\Infrastructure\CustomerRepository;
 use App\Domain\Customer\Repositories\CustomerRepositoryInterface;
+use App\Domain\Installation\Infrastructure\InstallationRepository;
+use App\Domain\Installation\Repositories\InstallationRepositoryInterface;
 use App\Domain\Service\Infrastructure\ServiceRepository;
 use App\Domain\Service\Repositories\ServiceRepositoryInterface;
 use App\Domain\State\Infrastructure\StateRepository;
@@ -20,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CustomerRepositoryInterface::class, CustomerRepository::class);
         $this->app->bind(ServiceRepositoryInterface::class, ServiceRepository::class);
         $this->app->bind(StateRepositoryInterface::class, StateRepository::class);
+        $this->app->bind(InstallationRepositoryInterface::class, InstallationRepository::class);
     }
 
     /**

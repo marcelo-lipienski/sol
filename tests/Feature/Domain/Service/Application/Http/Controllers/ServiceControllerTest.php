@@ -5,6 +5,7 @@ namespace Tests\Feature\Domain\Service\Application\Http\Controllers;
 use App\Models\Customer as EloquentCustomer;
 use App\Models\Service as EloquentService;
 use App\Models\State as EloquentState;
+use App\Models\Installation as EloquentInstallation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -34,14 +35,18 @@ class ServiceControllerTest extends TestCase
         $firstState = EloquentState::factory()->create();
         $secondState = EloquentState::factory()->create();
 
+        $storedInstallation = EloquentInstallation::factory()->create();
+
         $firstService = EloquentService::factory()->create([
             'customer_id' => $storedFirstCustomer->id,
-            'state_id' => $firstState->id
+            'state_id' => $firstState->id,
+            'installation_id' => $storedInstallation->id
         ]);
 
         $secondService = EloquentService::factory()->create([
             'customer_id' => $storedSecondCustomer->id,
-            'state_id' => $secondState->id
+            'state_id' => $secondState->id,
+            'installation_id' => $storedInstallation->id
         ]);
 
         $response = $this->get('/api/service');
@@ -51,11 +56,13 @@ class ServiceControllerTest extends TestCase
                 [
                     'id' => $firstService->id,
                     'customer' => $firstCustomer,
-                    'state' => $firstState->only(['short_name', 'long_name'])
+                    'state' => $firstState->only(['short_name', 'long_name']),
+                    'installation' => $storedInstallation->only(['name'])
                 ], [
                     'id' => $secondService->id,
                     'customer' => $secondCustomer,
-                    'state' => $secondState->only(['short_name', 'long_name'])
+                    'state' => $secondState->only(['short_name', 'long_name']),
+                    'installation' => $storedInstallation->only(['name'])
                 ]
             ]
         ]);
@@ -72,10 +79,12 @@ class ServiceControllerTest extends TestCase
 
         $storedCustomer = EloquentCustomer::factory()->create($customer);
         $storedState = EloquentState::factory()->create();
+        $storedInstallation = EloquentInstallation::factory()->create();
 
         $storedService = EloquentService::factory()->create([
             'customer_id' => $storedCustomer->id,
-            'state_id' => $storedState->id
+            'state_id' => $storedState->id,
+            'installation_id' => $storedInstallation->id
         ]);
 
         $response = $this->get("/api/service/{$storedService->id}");
@@ -84,7 +93,8 @@ class ServiceControllerTest extends TestCase
             'data' => [
                 'id' => $storedService->id,
                 'customer' => $customer,
-                'state' => $storedState->only(['short_name', 'long_name'])
+                'state' => $storedState->only(['short_name', 'long_name']),
+                'installation' => $storedInstallation->only('name')
             ]
         ]);
     }
@@ -100,10 +110,12 @@ class ServiceControllerTest extends TestCase
 
         $storedCustomer = EloquentCustomer::factory()->create($customer);
         $storedState = EloquentState::factory()->create();
+        $storedInstallation = EloquentInstallation::factory()->create();
 
         $response = $this->post('/api/service', [
             'customer_id' => $storedCustomer->id,
-            'state_id' => $storedState->id
+            'state_id' => $storedState->id,
+            'installation_id' => $storedInstallation->id
         ]);
 
         $this->assertDatabaseCount('services', 1);
@@ -111,7 +123,8 @@ class ServiceControllerTest extends TestCase
             'data' => [
                 'id' => $response->json('data.id'),
                 'customer' => $customer,
-                'state' => $storedState->only(['short_name', 'long_name'])
+                'state' => $storedState->only(['short_name', 'long_name']),
+                'installation' => $storedInstallation->only('name')
             ]
         ]);
     }
@@ -138,11 +151,15 @@ class ServiceControllerTest extends TestCase
         $storedFirstState = EloquentState::factory()->create();
         $storedSecondState = EloquentState::factory()->create();
 
+        $firstStoredInstallation = EloquentInstallation::factory()->create();
+        $secondStoredInstallation = EloquentInstallation::factory()->create();
+
         $this->assertDatabaseCount('customers', 2);
 
         $response = $this->post('/api/service', [
             'customer_id' => $storedFirstCustomer->id,
-            'state_id' => $storedFirstState->id
+            'state_id' => $storedFirstState->id,
+            'installation_id' => $firstStoredInstallation->id
         ]);
 
         $response->assertStatus(200);
@@ -151,14 +168,16 @@ class ServiceControllerTest extends TestCase
             'data' => [
                 'id' => $response->json('data.id'),
                 'customer' => $firstCustomer,
-                'state' => $storedFirstState->only(['short_name', 'long_name'])
+                'state' => $storedFirstState->only(['short_name', 'long_name']),
+                'installation' => $firstStoredInstallation->only('name')
             ]
         ]);
 
         $response = $this->post('/api/service', [
             'id' => $response->json('data.id'),
             'customer_id' => $storedSecondCustomer->id,
-            'state_id' => $storedSecondState->id
+            'state_id' => $storedSecondState->id,
+            'installation_id' => $secondStoredInstallation->id
         ]);
 
         $response->assertStatus(200);
@@ -168,7 +187,8 @@ class ServiceControllerTest extends TestCase
             'data' => [
                 'id' => $response->json('data.id'),
                 'customer' => $secondCustomer,
-                'state' => $storedSecondState->only(['short_name', 'long_name'])
+                'state' => $storedSecondState->only(['short_name', 'long_name']),
+                'installation' => $secondStoredInstallation->only('name')
             ]
         ]);
     }
@@ -184,10 +204,12 @@ class ServiceControllerTest extends TestCase
 
         $storedCustomer = EloquentCustomer::factory()->create($customer);
         $storedState = EloquentState::factory()->create();
+        $storedInstallation = EloquentInstallation::factory()->create();
 
         $storedService = EloquentService::factory()->count(2)->create([
             'customer_id' => $storedCustomer->id,
-            'state_id' => $storedState->id
+            'state_id' => $storedState->id,
+            'installation_id' => $storedInstallation->id
         ]);
 
         $this->assertDatabaseCount('services', 2);
