@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Customer as EloquentCustomer;
+use App\Models\State as EloquentState;
+use App\Models\Installation as EloquentInstallation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +20,9 @@ class ServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'customer_id' => EloquentCustomer::factory()->create()
+            'customer_id' => EloquentCustomer::factory()->create(),
+            'state_id' => EloquentState::factory()->create(),
+            'installation_id' => EloquentInstallation::factory()->create()
         ];
     }
 }
