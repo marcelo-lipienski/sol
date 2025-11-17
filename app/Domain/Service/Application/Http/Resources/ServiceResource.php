@@ -2,6 +2,8 @@
 
 namespace App\Domain\Service\Application\Http\Resources;
 
+use App\Domain\Customer\Application\Http\Resources\CustomerResource;
+use App\Domain\State\Application\Http\Resources\StateResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,12 +18,8 @@ class ServiceResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'customer' => [
-                'name' => $this->customer->name->value(),
-                'email' => $this->customer->email->value(),
-                'phone_number' => $this->customer->phoneNumber->value(),
-                'document' => $this->customer->document->value(),
-            ]
+            'customer' => new CustomerResource($this->customer),
+            'state' => new StateResource($this->state)
         ];
     }
 
