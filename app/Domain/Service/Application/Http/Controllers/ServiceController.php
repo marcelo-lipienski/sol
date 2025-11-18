@@ -9,6 +9,7 @@ use App\Domain\Service\Services\DeleteService;
 use App\Domain\Service\Services\FetchAllServices;
 use App\Domain\Service\Services\FetchService;
 use App\Http\Requests\StoreServiceRequest;
+use App\Models\Service as EloquentService;
 
 class ServiceController extends Controller
 {
@@ -19,9 +20,9 @@ class ServiceController extends Controller
         return ServiceResource::collection($services);
     }
 
-    public function show(int $id, FetchService $fetchService)
+    public function show(EloquentService $service, FetchService $fetchService)
     {
-        $service = $fetchService->execute($id);
+        $service = $fetchService->execute($service->id);
 
         return new ServiceResource($service);
     }
@@ -33,9 +34,9 @@ class ServiceController extends Controller
         return new ServiceResource($service);
     }
 
-    public function destroy(int $id, DeleteService $deleteService)
+    public function destroy(EloquentService $service, DeleteService $deleteService)
     {
-        $deleteService->execute($id);
+        $deleteService->execute($service->id);
 
         return response()->json([], 204);
     }
