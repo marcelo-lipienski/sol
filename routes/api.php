@@ -1,6 +1,7 @@
 <?php
 
 use App\Domain\Customer\Application\Http\Controllers\CustomerController;
+use App\Domain\Service\Application\Http\Controllers\EquipmentServiceController;
 use App\Domain\Service\Application\Http\Controllers\ServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,3 +11,4 @@ Route::get('/customer/{document}', [CustomerController::class, 'show'])->middlew
 Route::delete('/customer/{document}', [CustomerController::class, 'destroy'])->middleware('api');
 
 Route::apiResource('/service', ServiceController::class)->middleware('api');
+Route::apiResource('/service/{service}/equipment', EquipmentServiceController::class)->middleware('api');

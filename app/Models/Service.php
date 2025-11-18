@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Models\Customer as EloquentCustomer;
+use App\Models\Equipment as EloquentEquipment;
 use App\Models\State as EloquentState;
 use App\Models\Installation as EloquentInstallation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Service extends Model
 {
@@ -38,5 +40,11 @@ class Service extends Model
     public function installation(): BelongsTo
     {
         return $this->belongsTo(EloquentInstallation::class);
+    }
+
+    public function equipments(): BelongsToMany
+    {
+        return $this->belongsToMany(EloquentEquipment::class, 'equipments_services')
+            ->withPivot('amount');
     }
 }
