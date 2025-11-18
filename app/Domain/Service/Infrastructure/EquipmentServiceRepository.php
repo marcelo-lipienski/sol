@@ -16,7 +16,7 @@ class EquipmentServiceRepository implements EquipmentServiceRepositoryInterface
         if ($equipment) {
             // Equiment is already assigned to at least one service
             $equipment->services()
-                ->updateExistingPivot($equipmentService, ['amount' => $equipmentService->amount]);
+                ->updateExistingPivot($equipmentService->serviceId, ['amount' => $equipmentService->amount]);
         } else {
             EloquentService::find($equipmentService->serviceId)
                 ->equipments()

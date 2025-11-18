@@ -3,6 +3,7 @@
 namespace App\Domain\Service\Application\Http\Resources;
 
 use App\Domain\Customer\Application\Http\Resources\CustomerResource;
+use App\Domain\Equipment\Application\Http\Resources\EquipmentResource;
 use App\Domain\Installation\Application\Http\Resources\InstallationResource;
 use App\Domain\State\Application\Http\Resources\StateResource;
 use Illuminate\Http\Request;
@@ -21,7 +22,8 @@ class ServiceResource extends JsonResource
             'id' => $this->id,
             'customer' => new CustomerResource($this->customer),
             'state' => new StateResource($this->state),
-            'installation' => new InstallationResource($this->installation)
+            'installation' => new InstallationResource($this->installation),
+            'equipments' => EquipmentResource::collection($this->equipments)
         ];
     }
 

@@ -31,6 +31,7 @@ class ServiceRepository implements ServiceRepositoryInterface
                 $this->findCustomerById($service['customer']['id']),
                 $this->stateRepository->findById($service['state']['id']),
                 $this->installationRepository->findById($service['installation']['id']),
+                $this->findEquipmentsByService($service['id']),
                 $service['id']
             );
         }, EloquentService::with(['customer', 'state', 'installation'])->get()->toArray());
@@ -47,6 +48,7 @@ class ServiceRepository implements ServiceRepositoryInterface
             $this->findCustomerById($service->customer->id),
             $this->findStateById($service->state->id),
             $this->findInstallationById($service->installation->id),
+            $this->findEquipmentsByService($service->id),
             $service->id
         );
     }
@@ -66,6 +68,7 @@ class ServiceRepository implements ServiceRepositoryInterface
             $service->customer,
             $service->state,
             $service->installation,
+            null,
             $storedService->id,
         );
     }
@@ -88,5 +91,10 @@ class ServiceRepository implements ServiceRepositoryInterface
     private function findInstallationById(int $id): Installation
     {
         return $this->installationRepository->findById($id);
+    }
+
+    private function findEquipmentsByService($serviceId)
+    {
+        return EloquentService::find($serviceId)->equipments()->withPivot('amount')->get();
     }
 }
