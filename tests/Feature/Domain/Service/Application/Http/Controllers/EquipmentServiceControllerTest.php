@@ -6,6 +6,7 @@ use App\Models\Customer as EloquentCustomer;
 use App\Models\Equipment as EloquentEquipment;
 use App\Models\Service as EloquentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class EquipmentServiceControllerTest extends TestCase
@@ -76,6 +77,25 @@ class EquipmentServiceControllerTest extends TestCase
                     'amount' => 5
                 ]
             ]
+        ]);
+    }
+
+    public function test_remove_equipment_from_service(): void
+    {
+        $this->service->equipments()
+            ->attach($this->equipments->first()->id, ['amount' => 1]);
+
+        $this->service->equipments()
+            ->attach($this->equipments->last()->id, ['amount' => 10]);
+
+        $this->assertDatabaseCount('equipments_services', 2);
+
+        $response = $this->deleteJson("/api/service/{$this->service->id}/equipment/{$this->equipments->first()->id}");
+        $response->assertStatus(204);
+        $this->assertDatabaseCount('equipments_services', 1);
+        $this->assertDatabaseHas('equipments_services', [
+            'service_id' => $this->service->id,
+            'equipment_id' => $this->equipments->last()->id
         ]);
     }
 }

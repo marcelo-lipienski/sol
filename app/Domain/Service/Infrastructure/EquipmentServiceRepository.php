@@ -32,12 +32,12 @@ class EquipmentServiceRepository implements EquipmentServiceRepositoryInterface
         );
     }
 
-    // public function delete(DocumentValueObject $documentValueObject): void
-    // {
-    //     $equipment = EloquentCustomer::where('document', $documentValueObject->value())->first();
+    public function delete(int $serviceId, int $equipmentId): void
+    {
+        $service = EloquentService::has('equipments')->where('id', $serviceId)->first();
 
-    //     if ($equipment) {
-    //         $equipment->delete();
-    //     }
-    // }
+        if ($service) {
+            $service->equipments()->detach($equipmentId);
+        }
+    }
 }

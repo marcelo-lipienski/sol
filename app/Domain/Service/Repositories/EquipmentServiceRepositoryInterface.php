@@ -10,5 +10,5 @@ interface EquipmentServiceRepositoryInterface
     // public function findById(int $id): Equipment;
     // public function findByDocument(DocumentValueObject $documentValueObject): Equipment;
     public function save(EquipmentService $equipmentService): EquipmentService;
-    // public function delete(DocumentValueObject $documentValueObject): void;
+    public function delete(int $serviceId, int $equipmentId): void;
 }
