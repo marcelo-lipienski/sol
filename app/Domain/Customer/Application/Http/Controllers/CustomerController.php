@@ -20,8 +20,15 @@ class CustomerController extends Controller
         return CustomerResource::collection($customers);
     }
 
+    /**
+     * @param string $document Accept only digits
+     */
     public function show(string $document, FetchCustomer $fetchCustomer)
     {
+        if (!is_numeric($document)) {
+            return response()->json([], 400);
+        }
+
         $customer = $fetchCustomer->execute(
             new DocumentValueObject($document)
         );
@@ -38,6 +45,10 @@ class CustomerController extends Controller
 
     public function destroy(string $document, DeleteCustomer $deleteCustomer)
     {
+        if (!is_numeric($document)) {
+            return response()->json([], 400);
+        }
+
         $deleteCustomer->execute(
             new DocumentValueObject($document)
         );
