@@ -17,7 +17,7 @@ class CreateService
         private InstallationRepositoryInterface $installationRepository
     ) {}
 
-    public function execute(array $newService): Service
+    public function execute(?int $id, array $newService): Service
     {
         $customer = $this->customerRepository->findById($newService['customer_id']);
         $state = $this->stateRepository->findById($newService['state_id']);
@@ -27,7 +27,8 @@ class CreateService
             $customer,
             $state,
             $installation,
-            $newService['id'] ?? null
+            null,
+            $id ?? null
         );
 
         return $this->serviceRepository->save($service);

@@ -56,7 +56,7 @@ class ServiceRepository implements ServiceRepositoryInterface
     public function save(Service $service): Service
     {
         $storedService = EloquentService::updateOrCreate(
-            ['id' => $service->id],
+            ['id' => $service?->id],
             [
                 'customer_id' => $service->customer->id,
                 'state_id' => $service->state->id,
@@ -68,7 +68,7 @@ class ServiceRepository implements ServiceRepositoryInterface
             $service->customer,
             $service->state,
             $service->installation,
-            null,
+            $service->equipments,
             $storedService->id,
         );
     }

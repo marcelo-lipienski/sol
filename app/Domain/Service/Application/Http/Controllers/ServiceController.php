@@ -29,9 +29,9 @@ class ServiceController extends Controller
 
     public function store(StoreServiceRequest $request, CreateService $createService)
     {
-        $service = $createService->execute($request->validated());
+        $newService = $createService->execute($request?->id, $request->validated());
 
-        return new ServiceResource($service);
+        return new ServiceResource($newService);
     }
 
     public function destroy(EloquentService $service, DeleteService $deleteService)

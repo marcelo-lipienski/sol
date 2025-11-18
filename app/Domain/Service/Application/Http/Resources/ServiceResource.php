@@ -23,7 +23,7 @@ class ServiceResource extends JsonResource
             'customer' => new CustomerResource($this->customer),
             'state' => new StateResource($this->state),
             'installation' => new InstallationResource($this->installation),
-            'equipments' => EquipmentResource::collection($this->equipments)
+            'equipments' => EquipmentResource::collection($this->equipments ?? [])
         ];
     }
 

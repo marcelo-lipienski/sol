@@ -7,9 +7,6 @@ use App\Domain\EquipmentService\Application\Http\Resources\EquipmentServiceResou
 use App\Http\Controllers\Controller;
 use App\Domain\EquipmentService\Services\AddEquipmentToService;
 use App\Domain\EquipmentService\Services\RemoveEquipmentFromService;
-// use App\Domain\Equipment\Services\DeleteEquipment;
-// use App\Domain\Equipment\Services\FetchAllEquipments;
-// use App\Domain\Equipment\Services\FetchEquipment;
 use App\Http\Requests\StoreEquipmentToServiceRequest;
 
 class EquipmentServiceController extends Controller
@@ -21,7 +18,7 @@ class EquipmentServiceController extends Controller
         return new EquipmentServiceResource($equipmentService);
     }
 
-    public function destroy(int $serviceId, $equipmentId, RemoveEquipmentFromService $removeEquipmentFromService)
+    public function destroy(int $serviceId, int $equipmentId, RemoveEquipmentFromService $removeEquipmentFromService)
     {
         $removeEquipmentFromService->execute($serviceId, $equipmentId);
 

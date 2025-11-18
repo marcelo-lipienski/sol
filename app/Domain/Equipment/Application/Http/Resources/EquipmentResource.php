@@ -14,6 +14,8 @@ class EquipmentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        dd($request);
+
         return [
             'equipment' => [
                 'name' => $this->name,

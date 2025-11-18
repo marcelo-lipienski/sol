@@ -22,6 +22,9 @@ class StoreServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => [
+                'numeric'
+            ],
             'customer_id' => [
                 'required', 
                 'numeric',

@@ -3,7 +3,6 @@
 use App\Domain\Customer\Application\Http\Controllers\CustomerController;
 use App\Domain\Service\Application\Http\Controllers\EquipmentServiceController;
 use App\Domain\Service\Application\Http\Controllers\ServiceController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::apiResource('/customer', CustomerController::class)->except(['show', 'destroy'])->middleware('api');
