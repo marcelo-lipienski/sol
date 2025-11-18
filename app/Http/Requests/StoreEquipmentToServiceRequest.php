@@ -22,9 +22,6 @@ class StoreEquipmentToServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => [
-                'numeric'
-            ],
             'equipment_id' => [
                 'required',
                 'numeric',
